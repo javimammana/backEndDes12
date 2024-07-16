@@ -1,0 +1,30 @@
+
+    <div class="sticky">
+        <h1>Registrate!</h1>
+        <div class="line"></div>
+    </div>
+
+
+    <form class="lgForm"  action="api/users/register" method="POST">
+        <input class="lgFormItem" type="text" name="first_name" placeholder="Nombre" required>
+        <input class="lgFormItem" type="text" name="last_name" placeholder="Apellido" required>
+        <input class="lgFormItem" type="number" name="age"  placeholder="Edad" required>
+        <input class="lgFormItem" type="email" name="email"  placeholder="eMail" required>
+        <div class="lgFormItem inLine">
+            <input class="lgFormPass" id="loginPass" type="password" name="password" placeholder="Contraseña" required>
+            <img class="ico" src="/img/noVisible.png" id="loginPass-ico" onclick="pass()" alt="">
+        </div>
+        <div class="lgFormItem inLine">
+            <input class="lgFormPass" id="loginRePass" type="password" name="repassword" placeholder="Reingrese Contraseña" required>
+            <img class="ico" src="/img/noVisible.png" id="loginRePass-ico" onclick="pass2()" alt="">
+        </div>
+        {{!-- <input class="lgFormItem" type="password" name="password" id="" placeholder="Contraseña" required> --}}
+        {{!-- <input class="lgFormItem" type="password" name="repassword" id="" placeholder="Reingrese Contraseña" required> --}}
+        <button class="lgFormBtn" type="submit">Registrarse</button>
+        <p>Ya estas registrado? <a class="loginLink" href="/login">Ingresa!!</a></p>
+
+
+    </form>
+
+
+<script src="/js/util.js"></script>

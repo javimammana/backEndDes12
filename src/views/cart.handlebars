@@ -1,0 +1,185 @@
+
+    {{#if cart.products}}
+        <div class="sticky">
+            <h1>Productos en Carrito</h1>
+            <div class="line"></div>
+        </div>
+        <div class="contenedorCart">
+            {{#each enStock}}
+                <div class="itemCart">
+                    <div class="itemCartInfo">
+                        <div>
+                            <img class="imgCart" src="../../img/{{this.product.img}}">
+                        </div>
+                        <div class="infoCard">
+                            <div class="detalleCard detalleAling">
+                                <h3>{{this.product.title}}</h3>
+                                <p>{{this.product.code}}</p>
+                            </div>
+                            <div class="">
+                                <div class="detalleCard cantAling">
+                                    <p>Cant: </p>
+                                    <button class="btnCant" onclick="restar('{{../user.cart}}','{{this.product._id}}', {{this.quantity}}, {{this.product.stock}})">-</button>
+                                    <p>{{this.quantity}}</p>
+                                    <button class="btnCant" onclick="sumar('{{../user.cart}}','{{this.product._id}}', {{this.quantity}}, {{this.product.stock}})">+</button>
+                                </div>
+                            </div>
+                            <div class="detalleCard detalleAling">
+                                <h5>Precio por unidad: ${{this.product.price}}</h5>
+                                <p>$ {{ this.totalPrice }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="deleteOfCart">
+                        <button class="btn btnDel" onclick="eliminarProducto('{{../user.cart}}', '{{this.product._id}}')">Borrar</button>
+                    </div>
+                </div>
+            {{/each}}
+
+            {{#each sinStock}}
+                <div class="itemCart">
+                    <div class="itemCartInfo">
+                        <div>
+                            <img class="imgCart" src="../../img/{{this.product.img}}">
+                        </div>
+                        <div class="infoCard">
+                            <div class="detalleCard detalleAling">
+                                <h3>{{this.product.title}}</h3>
+                                <p>{{this.product.code}}</p>
+                            </div>
+                            <div class="">
+                                <div class="detalleCard cantAling">
+                                    <p>Cant: </p>
+                                    <p>{{this.quantity}}</p>
+                                                            <button class="btn btnDel" onclick="updateProduct('{{../user.cart}}','{{this.product._id}}', {{this.quantity}}, {{this.product.stock}})">Max stock</button>
+                                </div>
+                                <p>Excede el stock de {{this.product.stock}} unidades disponibles.</p>
+                                <p>Al procesar carrito, no sera incluido en la compra.-</p>
+                                <p>Puedes modificar la cantidad por el maximo de stock disponible.-</p>
+                            </div>
+                            <div class="detalleCard detalleAling">
+                                <h5>Precio por unidad: ${{this.product.price}}</h5>
+                                <p>$ {{ this.totalPrice }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="deleteOfCart">
+                        <button class="btn btnDel" onclick="eliminarProducto('{{../user.cart}}', '{{this.product._id}}')">Borrar</button>
+                    </div>
+                </div>
+            {{/each}}
+
+        <div class="totalPrice"><p>Total por el Carrito ${{totalFinal}} .-</p></div>
+        <div class="btnCart">
+            <form action="/api/carts/{{user.cart}}/purchase" method="POST">
+                <button class="btn btnPay" type="submit">Pagar</button>
+            </form>
+        </div>
+        <div class="btnCart">
+            <button class="btn btnDel" onclick="vaciarCarrito('{{user.cart}}')">Vaciar Carrito</button>
+        </div>
+        </div>
+
+
+    {{else}}
+        <div class="sticky">
+            <h2>El carrito esta vacio</h2>
+            <div class="line"></div>
+        </div>
+    {{/if}}
+
+<script>
+    function eliminarProducto(cartId, productId) {
+        fetch(`/api/carts/${cartId}/product/${productId}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al eliminar el producto del carrito');
+                }
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+        function sumar(cartId, productId, quantity, stock) {
+            if(quantity < stock) {
+                const data = { quantity: quantity+1 };
+                fetch(`/api/carts/${cartId}/product/${productId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(data),
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error al eliminar el producto del carrito');
+                        }
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+    }
+
+            function restar(cartId, productId, quantity, stock) {
+            if(quantity > 1) {
+                const data = { quantity: quantity-1 };
+                fetch(`/api/carts/${cartId}/product/${productId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(data),
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error al eliminar el producto del carrito');
+                        }
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+    }
+
+    function updateProduct(cartId, productId, quantity, stock) {
+        const data = { quantity: stock };
+        fetch(`/api/carts/${cartId}/product/${productId}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al eliminar el producto del carrito');
+                }
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function vaciarCarrito(cartId) {
+        fetch(`/api/carts/${cartId}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al vaciar el carrito');
+                }
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>

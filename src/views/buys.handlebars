@@ -1,0 +1,37 @@
+{{#if buysUser}}
+    <div class="sticky">
+        <h1>Mis Compras</h1>
+        <div class="line"></div>
+    </div>
+
+    <div class="buyContenedor">
+        <ul>
+            {{#each buysUser}}
+            <li><a href="/buys/{{this.purchasesId}}">{{this.code}}</a></li>
+            {{/each}}
+        </ul>
+        <div class="buyDetail">
+            <div>
+                <h5>Compra ID: {{ticket.code}}</h5>
+                <p>Estado: {{ticket.status}}</p>
+            </div>
+            <p>Detalle de compra</p>
+            <div class="cheProduct">
+                {{#each ticket.products}}
+                <div>
+                    <p><a href="/product/{{this.product._id}}">{{this.product.title}}</a> x {{this.quantity}} Uni.- Precio por unidad ${{this.price}}</p>
+                    <p>${{this.totalPrice}}</p>
+                </div>
+                {{/each}}
+            </div>
+            <p class="cheTotal">Valor total de Compra: ${{ticket.amount}}</p>
+        </div>
+    </div>
+
+{{else}}
+    <div class="sticky">
+        <h2>Aun no contas con Compras</h2>
+        <div class="line"></div>
+    </div>
+{{/if}}
+

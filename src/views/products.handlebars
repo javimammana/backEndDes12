@@ -1,0 +1,76 @@
+
+{{#if elementos}}
+    <div class="sticky">
+        <h1>Productos</h1>
+        <div class="line"></div>
+    </div>
+
+    <div class="contenedorCard">
+        {{#each elementos}}
+        <div class="card">
+            <div>
+                <a href="/product/{{this._id}}">
+                    <img class="img" src="../../img/{{this.img}}"> 
+                </a>
+            </div>
+            <a href="/product/{{this._id}}">
+                <h4>{{ this.title }}</h4>
+            </a>
+            <p>{{ this.description }}</p>
+            <div class="cardInfo">
+                {{#if this.stock}}
+                <p>Stock: {{ this.stock }}</p>
+                <h5>${{ this.price }} .-</h5>
+                {{else}}
+                <p>Sin Stock</p>
+                {{/if}}
+            </div>
+            {{#if this.stock}}
+                <form action="/api/carts/{{../user.cart}}/product/{{this._id}}" method="POST">
+                    <button class="btn" type="submit">Comprar</button>
+                </form>
+            {{else}}
+                <button class="btn">Notificarme de Stock</button>
+            {{/if}}
+        </div>
+        {{/each}}
+    </div>
+    
+    {{#if pages}}
+    <div>
+        <ul class="pagContenedor">
+            {{#if products.hasPrevPage}}
+            <li><a class="pagLink" href="/products/?page={{products.prevPage}}&limit={{products.limit}}&query={{query}}&sort={{sort}}">Prev</a></li>
+            {{/if}}
+
+            {{#each pages}}
+                {{#if pageNow}}
+                <li class="pagNow">{{this.page}}</li>
+                {{else}}
+                <li><a class="pagLink" href="/products/?page={{page}}&limit={{limit}}&query={{filtro}}&sort={{sort}}">{{this.page}}</a></li>
+                {{/if}}
+            {{/each}}
+
+            {{#if products.hasNextPage}}
+            <li><a class="pagLink" href="/products/?page={{products.nextPage}}&&limit={{products.limit}}&query={{query}}&sort={{sort}}">Next</a></li>
+            {{/if}}
+        </ul>
+    </div>
+    {{/if}}
+    
+    
+    <div>
+        {{else}}
+            <div class="sticky">
+                <h1>No hay productos</h1>
+                <div class="line"></div>
+            </div>
+        {{/if}}
+    </div>
+
+
+
+
+
+
+

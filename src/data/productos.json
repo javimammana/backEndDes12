@@ -1,0 +1,211 @@
+[
+  {
+    "title": "Producto 1",
+    "price": 10.99,
+    "description": "Descripción del producto 1",
+    "category": "Electrónica",
+    "stock": 50,
+    "code": "PRD001",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 2",
+    "price": 20.99,
+    "description": "Descripción del producto 2",
+    "category": "Hogar",
+    "stock": 30,
+    "code": "PRD002",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 3",
+    "price": 15.50,
+    "description": "Descripción del producto 3",
+    "category": "Moda",
+    "stock": 70,
+    "code": "PRD003",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 4",
+    "price": 30.75,
+    "description": "Descripción del producto 4",
+    "category": "Electrodomésticos",
+    "stock": 25,
+    "code": "PRD004",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 5",
+    "price": 25.00,
+    "description": "Descripción del producto 5",
+    "category": "Deporte",
+    "stock": 40,
+    "code": "PRD005",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 6",
+    "price": 12.49,
+    "description": "Descripción del producto 6",
+    "category": "Electrónica",
+    "stock": 60,
+    "code": "PRD006",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 7",
+    "price": 18.99,
+    "description": "Descripción del producto 7",
+    "category": "Hogar",
+    "stock": 20,
+    "code": "PRD007",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 8",
+    "price": 22.00,
+    "description": "Descripción del producto 8",
+    "category": "Moda",
+    "stock": 35,
+    "code": "PRD008",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 9",
+    "price": 27.99,
+    "description": "Descripción del producto 9",
+    "category": "Electrodomésticos",
+    "stock": 45,
+    "code": "PRD009",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 10",
+    "price": 35.50,
+    "description": "Descripción del producto 10",
+    "category": "Deporte",
+    "stock": 55,
+    "code": "PRD010",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 11",
+    "price": 16.75,
+    "description": "Descripción del producto 11",
+    "category": "Electrónica",
+    "stock": 65,
+    "code": "PRD011",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 12",
+    "price": 14.99,
+    "description": "Descripción del producto 12",
+    "category": "Hogar",
+    "stock": 75,
+    "code": "PRD012",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 13",
+    "price": 19.50,
+    "description": "Descripción del producto 13",
+    "category": "Moda",
+    "stock": 15,
+    "code": "PRD013",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 14",
+    "price": 28.75,
+    "description": "Descripción del producto 14",
+    "category": "Electrodomésticos",
+    "stock": 80,
+    "code": "PRD014",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 15",
+    "price": 23.00,
+    "description": "Descripción del producto 15",
+    "category": "Deporte",
+    "stock": 90,
+    "code": "PRD015",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 16",
+    "price": 26.99,
+    "description": "Descripción del producto 16",
+    "category": "Electrónica",
+    "stock": 100,
+    "code": "PRD016",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 17",
+    "price": 32.50,
+    "description": "Descripción del producto 17",
+    "category": "Hogar",
+    "stock": 110,
+    "code": "PRD017",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 18",
+    "price": 21.75,
+    "description": "Descripción del producto 18",
+    "category": "Moda",
+    "stock": 120,
+    "code": "PRD018",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  },
+  {
+    "title": "Producto 19",
+    "price": 17.99,
+    "description": "Descripción del producto 19",
+    "category": "Electrodomésticos",
+    "stock": 25,
+    "code": "PRD019",
+    "status": true,
+    "thumbnail": [],
+    "img": "sinImg.png"
+  }
+]

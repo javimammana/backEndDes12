@@ -1,0 +1,35 @@
+<header>
+    <div class="contenedor contNav">
+        <nav class="nav">
+            <a class="navLink" href="/products" class=""> LOGO </a>
+            {{#if user}}
+                {{#if user.admin}}
+                <ul>
+                    <li> <a class="navLink" href="/realtimeproducts"> Manager </a></li>
+                    <li> <a class="navLink" href=""> Pedidos </a></li>
+                </ul>
+                {{else}}
+
+                <ul>
+                    {{#if user.favorite}}<li> <a class="navLink" href="/carts"> Favoritos </a></li>{{/if}}
+                    <li> <a class="navLink" href="/carts"> Carrito </a></li>
+                    <li> <a class="navLink" href="/buys/tid"> Mis Compras </a></li>
+                    <li> <a class="navLink" href="/messages"> Chat </a></li>
+                </ul>
+                {{/if}}
+            {{else}}
+                <div class="navUser">
+                    <a class="navLink" href="/login"> Login </a>
+                </div>
+            {{/if}}
+
+        </nav>
+        <div class="line"></div>
+        {{#if user}}
+        <div class="navUser">
+            <p>Hola <a class="navLink" href="/profile">{{user.first_name}}</a> ({{user.role}})</p>
+            <a class="navLogout" href="/api/sessions/logout">Logout</a>
+        </div>
+        {{/if}}
+    </div>
+</header>

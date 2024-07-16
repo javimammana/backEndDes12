@@ -1,0 +1,31 @@
+
+<div class="sticky"></div>
+    <H1>Resumen de compra</H1>
+    <div class="line"></div>
+</div>
+<div class="contenedorCheckout">
+    <div class="checkout">
+        <p>Tu compra {{buy.code}} se genero exitosamente.</p>
+        <p>En breve recibiras un eMail a la casilla {{user.email}}, con los detalles de la compra.-</p>
+        <div class="cheProduct">
+            {{#each buy.products}}
+            <div>
+                <p>{{this.product.title}} x {{this.quantity}} Uni.- Precio por unidad ${{this.price}}</p>
+                <p>${{this.totalPrice}}</p>
+            </div>
+            {{/each}}
+            <p class="cheTotal">Valor Total del carrito ${{buy.amount}}</p>
+        </div>
+        {{#if cart.products}}
+        <div>
+            <p>Los siguientes productos,no se computaron en tu compra</p>
+            <div class="cheStock">
+                {{#each cart.products}}
+                <p>{{this.product.title}}, marcaste una cantidad de {{this.quantity}}, y solo hay en stock {{this.product.stock}} unidades</p>
+                {{/each}}
+            </div>
+            <p>No te preocupes, estos productos permaneceran en tu <a href="/carts">carrito</a>, podes cambiar la cantidad de alli o esperar a que podamos cubrir el stock que necesitas.-</p>
+        </div>
+        {{/if}}
+    </div>
+</div>

@@ -1,0 +1,33 @@
+
+    <div class="rtAddPrd">
+        <div class="realTime">
+            <h1>Agregar Productos</h1>
+        </div>
+
+            <form action="/realtimeproducts" id="addProductForm" class="rtForm" enctype="multipart/form-data" method="POST">
+                <input class="rtFormItem" type="text" placeholder="Nombre de producto" name="title" id="title" required>
+                <input class="rtFormItem" type="text" placeholder="Categoria de producto" name="category" id="category" required>
+                <input class="rtFormItem" type="text" placeholder="Descripcion del producto" name="description" id="description" required>
+                <input class="rtFormItem" type="number" placeholder="Precio" name="price" id="price" required>
+                <input class="rtFormItem" type="text" placeholder="Codigo de producto" name="code" id="code" required>
+                <input class="rtFormItem" type="number" placeholder="Stock de producto" name="stock" id="stock" required>
+                <input class="rtFormItem" type="file" name="image" id="img">
+
+                <button class="rtFormBtn" type="submit" id="button">Cargar</button>
+            </form>
+            
+
+    </div>
+    <div class="sticky">
+        <h1>Productos en Base</h1>
+        <div class="line"></div>
+    </div>
+
+    <div class="listProducts" id="listProducts">
+
+    </div>
+
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script src="js/main.js"></script>

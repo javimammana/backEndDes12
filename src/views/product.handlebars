@@ -1,0 +1,38 @@
+
+    {{#if product}}
+        <div class="sticky">
+            <h1>{{product.title}}</h1>
+            <div class="line"></div>
+        </div>
+        <div class="productBox">
+            <div>
+                <img class="productImg" src="../../img/{{this.product.img}}" alt="">
+            </div>
+            <div class="productDatos">
+                <p>{{product.description}}</p>
+                <div>
+                    <div>
+                        {{#if product.stock}}
+                            <p>Stock: {{ product.stock }}</p>
+                            <p>${{ product.price }} .-</p>
+                        {{else}}
+                            <p>Sin Stock</p>
+                        {{/if}}
+                    </div>
+                    {{#if product.stock}}
+                        <form action="/api/carts/{{user.cart}}/product/{{product._id}}" method="POST">
+                            <button class="btn" type="submit">Comprar</button>
+                        </form>
+                    {{else}}
+                        <button class="btn">Notificarme de Stock</button>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+
+    {{else}}
+        <div class="sticky">
+            <h1>El producto no existe</h1>
+            <div class="line"></div>
+        </div>
+    {{/if}}
