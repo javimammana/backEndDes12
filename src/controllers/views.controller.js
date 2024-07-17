@@ -197,6 +197,39 @@ class ViewController {
         }
     }
 
+    async viewResetPassword (req, res) {
+        try {
+            res.render("resetPassword", {
+                title: "Restablecimiento de Contraseña",
+                fileCss: "style.css"
+            })
+        } catch (error) {
+            res.status(500).json({error: "Error del servidor al Renderizar Restablecimeinto de Contraseña"});
+        }
+    }
+
+    async viewChargePassword (req, res) {
+        try {
+            res.render("passwordChange", {
+                title: "Restablecimiento de Contraseña",
+                fileCss: "style.css"
+            })
+        } catch (error) {
+            res.status(500).json({error: "Error del servidor al Renderizar Restablecimeinto de Contraseña"});
+        }
+    }
+
+    async viewSendMailReset (req, res) {
+        try {
+            res.render("sendMailReset", {
+                title: "Restablecimiento de Contraseña",
+                fileCss: "style.css"
+            })
+        } catch (error) {
+            res.status(500).json({error: "Error del servidor al Renderizar Restablecimeinto de Contraseña"});
+        }
+    }
+
     viewProfile (req, res) {
         try {
             const user = req.user

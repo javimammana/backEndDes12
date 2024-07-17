@@ -1,7 +1,9 @@
 import { cartServices, ticketServices } from "../services/services.js";
 import { productServices } from "../services/services.js";
 import { userServices } from "../services/services.js";
-import nodemailer from "nodemailer";
+import { EmailManager } from "../services/email.js";
+
+const emailManager = new EmailManager();
 
 class CartController {
 
@@ -231,12 +233,8 @@ class CartController {
             //console.log(algo)
 
             //Envio notificacion
-            await transport.sendMail({
-                from:"Javi M <javiermammana.deb@gmail.com>",
-                to: buy.purchaser,
-                subject: `Detalle de compra, pedido ${buy.code}.-`,
-                html: `<h1>Confirmamos tu compra ${buy.code}, Saludos!!`
-            })
+
+            await emailManager.sendMailBuy(buy.purchaser, usuario.first_name, buy.code);
 
             //actualizo el carrito del usuario
             const cartSinStock = {
@@ -256,14 +254,5 @@ class CartController {
         }
     }
 }
-
-const transport = nodemailer.createTransport({
-    service: "gmail",
-    port: 587,
-    auth: {
-        user: "javiermammana.dev@gmail.com",
-        pass: "xnln qlld uvbj ktdc"
-    }
-})
 
 export default CartController;

@@ -2,8 +2,10 @@ import { userServices } from "../services/services.js";
 import { cartServices } from "../services/services.js";
 import { createHash, isValidPassword } from "../utils/hashbcrypt.js";
 import jwt from "jsonwebtoken";
+import { createTokenPass } from "../utils/utils.js";
+import { EmailManager } from "../services/email.js";
 
-
+const emailManager = new EmailManager();
 
 function capitalize(text) {
     const firstLetter = text.charAt(0);
@@ -25,7 +27,7 @@ class UserController {
             cart: user.cart,
             favorite: user.favorite,
             chatid: user.chatid
-        }, "coderhouse", {expiresIn: "5m"});
+        }, "coderhouse", {expiresIn: "15m"});
     
         res.cookie("coderCookieToken", token, {
             maxAge: 180000,
@@ -134,6 +136,94 @@ class UserController {
             res.status(500).json({error: error.message});
         }
     }
+
+        //Recupero de Clave
+
+    async requestPasswordReset (req, res) {
+
+        const { email } = req.body;
+        try {
+
+            const user = await userServices.getUserByEmail({email: email});
+
+            if (!user) {
+                return res.status (404).send("Usuario no encontrado");
+            }
+
+            const token = createTokenPass();
+
+            user.resetToken = {
+                token: token,
+                expire: new Date(Date.now() + 3600000)
+            }
+
+            await userServices.updateUserByEmail({email: email}, user);
+
+            await emailManager.sendMailReset(email, user.first_name, token);
+
+            res.redirect("/sendMailOk");
+
+
+        } catch (error) {
+            res.status(500).send("Error Interno del servidor al enviar token" + error);
+        }
+    }
+
+    async resetPassword(req, res) {
+        const {email, password, token} = req.body;
+
+        try {
+            
+            const user = await userServices.getUserByEmail({email: email});
+
+            if (!user) {
+                return res.render("/passwordChange", {
+                    error: "Usuario no existe",
+                    title: "Restablecimiento de Contraseña",
+                    fileCss: "style.css"
+                })
+            }
+
+            if (!user.resetToken || user.resetToken.token !== token) {
+                return res.render ("passwordChange", {
+                    error: "Token invalido o caduco",
+                    title: "Restablecimiento de Contraseña",
+                    fileCss: "style.css"
+                })
+            }
+
+            const now = new Date();
+            if (now > user.resetToken.expire) {
+                return res.render ("passwordChange", {
+                    error: "Token invalido o caduco",
+                    title: "Restablecimiento de Contraseña",
+                    fileCss: "style.css"
+                })
+            }
+
+            if (isValidPassword(password, user)) {
+                return res.render ("passwordChange", {
+                    error: "La nueva contraseña no es valida",
+                    title: "Restablecimiento de Contraseña",
+                    fileCss: "style.css"
+                })
+            }
+
+            user.password = createHash(password);
+
+            user.resetToken = {};
+
+            await userServices.updateUserByEmail({email: email}, user);
+
+            return res.redirect ("/login");
+
+        } catch (error) {
+            res.status(500).render("passwordChange", {
+                error: "Error del servidor"
+            })
+        }
+    }
+
 }
 
 export default UserController;

@@ -26,8 +26,13 @@ const schema = new mongoose.Schema({
 
     role: {
         type: String,
-        enum: ["ADMIN", "USER"],
+        enum: ["ADMIN", "USER", "PREMIUM"],
         default: "USER"
+    },
+
+    resetToken: {
+        token: String,
+        expire: Date
     },
 
     cart: {

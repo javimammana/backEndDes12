@@ -14,6 +14,8 @@ const router = Router();
 const userController = new UserController();
 
 router.post("/register", userController.createUser);
+router.post("/requestPasswordReset", userController.requestPasswordReset);
+router.post("/resetPassword", userController.resetPassword);
 // const cartManager = new CartManager();
 
 // router.post("/", async (req, res) => {
