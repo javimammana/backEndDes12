@@ -224,6 +224,33 @@ class UserController {
         }
     }
 
+    async cambioRol (req, res) {
+
+        const { uid } = req.params;
+
+        console.log(uid)
+        try {
+            
+            const user = await userServices.getUserById(uid);
+
+            if(!user) {
+                return res.status(404).send("Usuario no encontrado")
+            }
+
+            const nvoRol = user.role === "USER" ? "PREMIUM" : "USER"
+
+            await userServices.updateUser(uid, {role: nvoRol});
+
+            const userUpdate = await userServices.getUserById(uid);
+            
+            res.json(userUpdate);
+
+        } catch (error) {
+            
+            res.status(500).send("Error en el servidor al cambiar ROL");
+        }
+    }
+
 }
 
 export default UserController;

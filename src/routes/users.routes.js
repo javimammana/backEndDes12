@@ -16,6 +16,7 @@ const userController = new UserController();
 router.post("/register", userController.createUser);
 router.post("/requestPasswordReset", userController.requestPasswordReset);
 router.post("/resetPassword", userController.resetPassword);
+router.put("/premium/:uid", userController.cambioRol);
 // const cartManager = new CartManager();
 
 // router.post("/", async (req, res) => {
