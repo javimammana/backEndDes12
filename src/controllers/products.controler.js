@@ -3,9 +3,12 @@ import CustomError from "../services/errors/custom-error.js";
 import { EErrors } from "../services/errors/enum.js";
 import { infoErrorCode, infoErrorItem, infoErrorProducto } from "../services/errors/info.js";
 
+
+
 class ProductController {
 
     async createProduct (req, res, next) {
+
         const {title, description, price, code, stock, category} = req.body;
 
         try {
@@ -150,11 +153,11 @@ class ProductController {
     async deleteProductRealTime (data) {
         try {
             await productServices.deleteProduct(data);
-            req.logger.info("(CONTROLLER) - El producto se elimino desde el administrador")
+            console.log("Producto Eliminado")
         } catch (error) {
-            //console.log(error)
-            req.logger.error("(CONTROLLER) - Error al eliminar producto desde Administrador de productos")
+            console.log(error)
             throw new Error ("(CONTROLLER) Error al borrar productosRealTime");
+
         }
     }
 
@@ -163,21 +166,18 @@ class ProductController {
             const products = await productServices.getProducts();
             return products;
         } catch (error) {
-            //console.log(error)
-            req.logger.error("(CONTROLLER) - Error al obtener productos en el administrador");
+            console.log(error)
             throw new Error ("(CONTROLLER) Error al obtener productosRealTime");
         }
     }
-
     async createProductRealTime (data) {
+
         try {
             const product = await productServices.createProduct(data);
-            //console.log(product)
-            req.logger.info("(CONTROLLER) - Se crea producto de manera exitosa desde el administrador")
+            console.log(product)
             return product;
         } catch (error) {
-            //console.log(error)
-            req.logger.error("(CONTROLLER) - Error al crear producto desde Administrador")
+            console.log(error)
             throw new Error ("(CONTROLLER) Error al crear productosRealTime");
         }
     }
@@ -200,11 +200,10 @@ class ProductController {
             }
 
             await productServices.updateProduct(id, nvoProd);
-            req.logger.info("(CONTROLLER) - Se actualiza producto de manera exitosa desde Administrador");
+
             return;
         } catch (error) {
-            //console.log(error)
-            req.logger.error("(CONTROLLER) - Error al actualizar producto desde Administrador");
+            console.log(error)
             throw new Error ("(CONTROLLER) Error al actualizar productosRealTime");
         }
     }

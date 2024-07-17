@@ -1,7 +1,5 @@
-import { productServices, userServices } from "../services/services.js";
-import { cartServices } from "../services/services.js";
-import { chatServices } from "../services/services.js";
-import { ticketServices } from "../services/services.js";
+import { parse } from "dotenv";
+import { productServices, userServices, cartServices, chatServices, ticketServices } from "../services/services.js";
 import { generarProductos } from "../utils/utils.js";
 
 // import configObject from "../config/configEnv.js";
@@ -143,7 +141,13 @@ class ViewController {
 
     async viewRealTimeProducts (req, res) {
         try {
-            const user = req.user
+            let user = {...req.user,
+                owner: "ADMIN"
+            }
+
+            if (user.role === "PREMIUM") {
+                user = {...user, owner: user.email}
+            }
     
             res.render("realTimeProducts", {
                 title: "Manager de productos",

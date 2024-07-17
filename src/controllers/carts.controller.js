@@ -1,6 +1,4 @@
-import { cartServices, ticketServices } from "../services/services.js";
-import { productServices } from "../services/services.js";
-import { userServices } from "../services/services.js";
+import { cartServices, ticketServices, productServices, userServices } from "../services/services.js";
 import { EmailManager } from "../services/email.js";
 
 const emailManager = new EmailManager();
@@ -27,6 +25,8 @@ class CartController {
 
     async addProductCart (req, res) {
         const { cid, pid } = req.params;
+        const user = await userServices.getUserByCID({cart: cid})
+
         const cart = await cartServices.getCartById(cid);
         if (!cart) {
             req.logger.error("(CONTROLLER) - El carrito no existe"); 
@@ -39,6 +39,14 @@ class CartController {
         }
 
         try {
+
+            if (user.role === "PREMIUM") {
+                if (user.email === product.owner) {
+                    req.logger.error("(CONTROLLER) - No podes comprar tu Propio Producto"); 
+                    res.json("No podes comprar tu Propio Producto");
+                }
+            }
+
             const exist = cart.products.find(item => item.product._id.toString() === pid);
             if (exist) {
                 if (exist.quantity < product.stock) {

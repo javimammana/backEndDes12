@@ -40,6 +40,15 @@ class UserDao {
         }
     }
 
+    async getUserByCID(CID) {
+        try {
+            const user = await UserModel.findOne(CID);
+            return user;
+        } catch (error) {
+            throw new Error ("(DAO) Error al buscar Usuario");
+        }
+    }
+
     async updateuserByEmail (mail, data) {
         try {
             const user = await UserModel.findOneAndUpdate(mail, data);

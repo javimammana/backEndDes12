@@ -1,5 +1,4 @@
-import { userServices } from "../services/services.js";
-import { cartServices } from "../services/services.js";
+import { userServices, cartServices } from "../services/services.js";
 import { createHash, isValidPassword } from "../utils/hashbcrypt.js";
 import jwt from "jsonwebtoken";
 import { createTokenPass } from "../utils/utils.js";
@@ -129,6 +128,7 @@ class UserController {
     async logout (req, res) {
         try {
             res.clearCookie("coderCookieToken");
+            res.clearCookie("prm")
             req.logger.info("(CONTROLLER) - Cierre de sesion exitoso");
             res.redirect("/login");
         } catch (error) {
@@ -225,12 +225,8 @@ class UserController {
     }
 
     async cambioRol (req, res) {
-
         const { uid } = req.params;
-
-        console.log(uid)
         try {
-            
             const user = await userServices.getUserById(uid);
 
             if(!user) {
@@ -238,15 +234,11 @@ class UserController {
             }
 
             const nvoRol = user.role === "USER" ? "PREMIUM" : "USER"
-
             await userServices.updateUser(uid, {role: nvoRol});
-
             const userUpdate = await userServices.getUserById(uid);
-            
             res.json(userUpdate);
 
         } catch (error) {
-            
             res.status(500).send("Error en el servidor al cambiar ROL");
         }
     }

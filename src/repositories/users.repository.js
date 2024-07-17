@@ -4,8 +4,6 @@ const userDao = new UserDao();
 
 function DTO (user) {
     const {password, ...rest} = user;
-
-    // console.log(`usuario DTO: ${rest._doc}`)
     return rest._doc;
 }
 
@@ -48,6 +46,18 @@ class UserRepository {
             const user = await userDao.getUserByEmail(mail);
             const usuario = DTO(user);
             return usuario;
+        } catch (error) {
+            console.log ("(REPOSITORY) Error al buscar Usuario");
+            return false;
+        }
+    }
+
+    async getUserByCID (cid) {
+        try {
+            const user = await userDao.getUserByCID(cid);
+            const usuario = DTO(user);
+            const usuariok = {...usuario, password: ''}
+            return usuariok;
         } catch (error) {
             console.log ("(REPOSITORY) Error al buscar Usuario");
             return false;

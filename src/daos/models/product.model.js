@@ -11,7 +11,7 @@ const productSchema = new Schema ({
     stock: { type: Number, required: true },
     status: {type: String, 'default': 'true'},
     category: { type: String, required: true },
-    owner: {type: String, 'defaul': "ADMIN"}
+    owner: {type: String, 'default': "ADMIN"}
 });
 
 productSchema.plugin(mongoosePaginate);

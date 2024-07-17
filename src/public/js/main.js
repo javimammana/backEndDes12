@@ -2,8 +2,27 @@ const socket = io();
 
 const button = document.querySelector("#button");
 
-const deleteItem = (id) => {
+const deleteItem = (id, owner) => {
+
+    if (rol !== "ADMIN") {
+        if (owner !== userOwner) {
+            Toastify({
+                text: "No podes Eliminar este producto",
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                style: {
+                    background: "linear-gradient(to right, #353434, #000)",
+                    color: "#ebce0f",
+                },
+            }).showToast();
+        }
+    }
+    
     const data = id;
+    console.log(owner)
     socket.emit("deleteProduct", data);
 
     Toastify({
@@ -26,11 +45,6 @@ function capitalize(text) {
     return firstLetter.toUpperCase() + rest;
 }
 
-// updateButton.addEventListener("click", (e) => {
-//     e.preventDefault();
-
-//     const form = document.getElementById("addProductForm");
-// })
 
 button.addEventListener("click", (e) => {
     e.preventDefault();
@@ -52,6 +66,7 @@ button.addEventListener("click", (e) => {
         price: Number(price.value).toFixed(2),
         code: code.value.toUpperCase(),
         stock: Number(stock.value),
+        owner: userOwner,
         img: img.value == '' ? "sinImg.png" : "productos/" + document.getElementById("img").files[0].name
     };
     socket.emit("addForForm", newProduct);
@@ -77,7 +92,6 @@ socket.on("resultado", (data) => {
 });
 
 function update (code) {
-    console.log(code)
     document.getElementById("item"+code).classList.add("noVisible");
     document.getElementById("item"+code).classList.remove("rtCard");
     document.getElementById("update"+code).classList.remove("noVisible");
@@ -91,20 +105,32 @@ function noUpdate (code) {
     document.getElementById("update"+code).classList.remove("rtCard");
 }
 
-function updateButton (code, id) {
+function updateButton (code, id, owner) {
 
-    console.log(code)
-    console.log(id)
+    if (rol !== "ADMIN") {
+        if (owner !== userOwner) {
+            Toastify({
+                text: "No podes Actualizar este producto",
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                style: {
+                    background: "linear-gradient(to right, #353434, #000)",
+                    color: "#ebce0f",
+                },
+            }).showToast();
+        }
+    }
+
     const stockUp = document.getElementById("stockUpdate"+code).value;
     const priceUp = document.getElementById("priceUpdate"+code).value;
-    console.log(stockUp)
-    console.log(priceUp)
     const data = {
         id: id,
         stock: !stockUp ? "" : Number(stockUp),
         price: !priceUp ? "" : Number(priceUp)
     }
-    console.log(data)
     socket.emit("updateProduct", data);
 }
 
@@ -113,9 +139,17 @@ socket.on("listProduct", (data) => {
 
     let listProducts = "";
 
-    
+    let products = data;
 
-    data.forEach((element) => {
+    if (rol !== "ADMIN") {
+        products = [];
+
+        for (prod of data) {
+            prod.owner === userOwner ? products.push(prod): "";
+        }
+    }
+
+    products.forEach((element) => {
         listProducts += `<div id="item${element.code}" class="rtCard">
                             <div class="rtFlex">
                                 <div class="rtImgBox">
@@ -137,7 +171,7 @@ socket.on("listProduct", (data) => {
                             </div>
                             <div class="rtButtons">
                                 <button class="rtBtn rtBtnUpdate" onClick="update('${element.code}')">Modificar</button>
-                                <button class="rtBtn rtBtnDelete" onClick="deleteItem('${element._id}')">Borrar</button>
+                                <button class="rtBtn rtBtnDelete" onClick="deleteItem('${element._id}', '${element.owner}')">Borrar</button>
                             </div>
                         </div>
 
@@ -167,7 +201,7 @@ socket.on("listProduct", (data) => {
                             </div>
                             <div class="rtButtons">
                                 <button class="rtBtn rtBtnCancel" onClick="noUpdate('${element.code}')">Cancelar</button>
-                                <button class="rtBtn rtBtnUpdate" onClick="updateButton('${element.code}', '${element._id}')">Actualizar</button>
+                                <button class="rtBtn rtBtnUpdate" onClick="updateButton('${element.code}', '${element._id}', '${element.owner}')">Actualizar</button>
                             </div>
                         </div>
                         

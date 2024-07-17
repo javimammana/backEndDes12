@@ -1,6 +1,6 @@
 import express from "express";
 import exphbs from "express-handlebars";
-import { Server } from "socket.io";
+// import { Server } from "socket.io";
 import multer from "multer";
 import cookieParser from "cookie-parser";
 import session from "express-session";
@@ -20,11 +20,6 @@ import userRouter from "./routes/users.routes.js";
 import manejadorError from "./middleware/error.js";
 
 import addLogger from "./utils/logger.js";
-
-import ChatController from "./controllers/chats.controller.js";
-import ProductController from "./controllers/products.controler.js";
-const chatController = new ChatController();
-const productController = new ProductController();
 
 
 const app = express();
@@ -97,60 +92,5 @@ const httpServer = app.listen(PORT, () => console.log(`Server listening on port 
 
 
 //Socket
-const  io = new Server(httpServer);
-
-io.on("connection", async (socket) => {
-    console.log ("Un cliente se conecta a PROD");
-
-    //Productos en tiempo real.-
-    socket.emit("listProduct", await productController.getProductsRealTime());
-
-    socket.on("deleteProduct", async (data) => {
-        await productController.deleteProductRealTime(data);
-        socket.emit("listProduct", await productController.getProductsRealTime());
-    });
-
-    socket.on("addForForm", async (data) => {
-        let resultado = await productController.createProductRealTime(data);
-        if(resultado) {
-            resultado = `${resultado.title}, se agrego a tus productos!`
-        } else {
-            resultado= "Producto incompleto"
-        }
-        socket.emit("listProduct", await productController.getProductsRealTime());
-        socket.emit("resultado", resultado); //Aplicar la respuesta para mostrar en pantalla.-
-    });
-
-    socket.on("updateProduct", async (data) => {
-        console.log("update desde back")
-        console.log(data);
-        const resultado = await productController.updateProductRealTime(data);
-        socket.emit("listProduct", await productController.getProductsRealTime());
-        socket.emit("resultado", resultado); //Aplicar la respuesta para mostrar en pantalla.-
-    });
-
-    //CHAT!
-
-    const messages = await chatController.getAllMessages();
-    console.log("Nuevo usuario conectado al CHAT");
-
-    socket.on("message", async (data) => {
-        // console.log(data);
-        await chatController.sendMessage(data);
-        const messages = await chatController.getAllMessages();
-        io.emit("messages", messages);
-    });
-
-    socket.on("inicio", async (data) => {
-        const messages = await chatController.getAllMessages();
-        io.emit("messages", messages);
-        socket.broadcast.emit("connected", data);
-    });
-
-    socket.emit("messages", messages);
-})
-
-
-
-
-
+import SocketManager from "./sockets/socketManager.js";
+new SocketManager(httpServer);
