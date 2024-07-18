@@ -1,22 +1,14 @@
 <header>
     <div class="contenedor contNav">
         <nav class="nav">
-            <a class="navLink" href="/products" class=""> LOGO </a>
+            <div class="navLogo">
+                <a class="navLink" href="/products" class=""> LOGO </a>
+            </div>
             {{#if user}}
-                {{#if user.admin}}
-                <ul>
-                    <li> <a class="navLink" href="/realtimeproducts"> Manager </a></li>
-                    <li> <a class="navLink" href=""> Pedidos </a></li>
-                </ul>
-                {{else}}
-
-                <ul>
-                    {{#if user.favorite}}<li> <a class="navLink" href="/carts"> Favoritos </a></li>{{/if}}
-                    <li> <a class="navLink" href="/carts"> Carrito </a></li>
-                    <li> <a class="navLink" href="/buys/tid"> Mis Compras </a></li>
-                    <li> <a class="navLink" href="/messages"> Chat </a></li>
-                </ul>
-                {{/if}}
+                <div class="navUser">
+                    <p>Hola <a class="navLink" href="/profile">{{user.first_name}}</a> ({{user.role}})</p>
+                    <a class="navLogout" href="/api/sessions/logout">Logout</a>
+                </div>
             {{else}}
                 <div class="navUser">
                     <a class="navLink" href="/login"> Login </a>
@@ -26,10 +18,40 @@
         </nav>
         <div class="line"></div>
         {{#if user}}
-        <div class="navUser">
-            <p>Hola <a class="navLink" href="/profile">{{user.first_name}}</a> ({{user.role}})</p>
-            <a class="navLogout" href="/api/sessions/logout">Logout</a>
-        </div>
+            {{#if user.premium}}
+            <div class="navOption optionPremium">
+                <ul>
+                    <li> <a class="navLink" href="/realtimeproducts"> Manager </a></li>
+                    <li> <a class="navLink" href=""> Pedidos </a></li>
+                </ul>
+                <ul>
+                    {{#if user.favorite}}<li> <a class="navLink" href="/favorites"> Favoritos </a></li>{{/if}}
+                    <li> <a class="navLink" href="/carts"> Carrito </a></li>
+                    <li> <a class="navLink" href="/buys/tid"> Mis Compras </a></li>
+                    <li> <a class="navLink" href="/messages"> Chat </a></li>
+                </ul>
+            </div>
+            {{else}}
+            {{#if user.admin}}
+            <div class="navOption">
+                <ul>
+                    <li> <a class="navLink" href="/realtimeproducts"> Manager </a></li>
+                    <li> <a class="navLink" href=""> Pedidos </a></li>
+                    <li> <a class="navLink" href="/users"> Usuarios </a></li>
+                </ul>
+            </div>
+            {{else}}
+            <div class="navOption optionUser">
+                <ul>
+                    {{#if user.favorite}}<li> <a class="navLink" href="/carts"> Favoritos </a></li>{{/if}}
+                    <li> <a class="navLink" href="/carts"> Carrito </a></li>
+                    <li> <a class="navLink" href="/buys/tid"> Mis Compras </a></li>
+                    <li> <a class="navLink" href="/messages"> Chat </a></li>
+                </ul>
+            </div>
+            {{/if}}
+
+            {{/if}}
         {{/if}}
     </div>
 </header>

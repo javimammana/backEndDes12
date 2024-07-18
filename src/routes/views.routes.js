@@ -9,9 +9,11 @@ const router = Router();
 const viewController = new ViewController();
 
 router.get("/", viewController.viewHome);
-router.get("/products", passport.authenticate("jwt", {session: false, failureRedirect: "/login"}), viewController.viewProductsPaginate);
-router.get ("/product/:pid", passport.authenticate("jwt", {session: false, failureRedirect: "/login"}), viewController.viewProductById);
+router.get("/products", passport.authenticate("jwt", {session: false, failureRedirect: "/login"}), checkRole(['USER', 'PREMIUM']), viewController.viewProductsPaginate);
+router.get ("/product/:pid", passport.authenticate("jwt", {session: false, failureRedirect: "/login"}), checkRole(['USER', 'PREMIUM']), viewController.viewProductById);
 router.get("/carts", passport.authenticate("jwt", {session: false, failureRedirect: "/login"}), checkRole(['USER', 'PREMIUM']), viewController.viewCart);
+router.get("/favorites", passport.authenticate("jwt", {session: false, failureRedirect: "/login"}), checkRole(['USER', 'PREMIUM']), viewController.viewFavorite);
+router.get("/users", passport.authenticate("jwt", {session: false, failureRedirect: "/login"}), checkRole(['ADMIN']), viewController.viewUsers);
 router.get("/realtimeproducts", passport.authenticate("jwt", {session: false, failureRedirect: "/login"}), checkRole(['ADMIN', 'PREMIUM']), viewController.viewRealTimeProducts);
 router.get("/carts/:tid/checkout", passport.authenticate("jwt", {session: false, failureRedirect: "/login"}), checkRole(['USER', 'PREMIUM']), viewController.viewCheckOut);
 router.get("/buys/:tid", passport.authenticate("jwt", {session: false, failureRedirect: "/login"}), checkRole(['USER', 'PREMIUM']), viewController.viewBuys);

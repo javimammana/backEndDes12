@@ -25,13 +25,27 @@
                 <p>Sin Stock</p>
                 {{/if}}
             </div>
-            {{#if this.stock}}
-                <form action="/api/carts/{{../user.cart}}/product/{{this._id}}" method="POST">
-                    <button class="btn" type="submit">Comprar</button>
-                </form>
-            {{else}}
-                <button class="btn">Notificarme de Stock</button>
-            {{/if}}
+                <div class="btnCardBox">
+                {{#if this.stock}}
+                    <form action="/api/carts/{{../user.cart}}/product/{{this._id}}" method="POST">
+                        <button class="btn btnCompra" type="submit">Comprar</button>
+                    </form>
+                    <form action="/api/products/{{this._id}}/favorite/{{../user.email}}" method="POST">
+                        <button class="btnFavorite" type="submit"><img src="../../img/{{#if this.favorite}}favorite.png{{else}}noFavorite.png{{/if}}" alt=""></button>
+                    </form>
+                {{else}}
+                    {{#if this.notifyUser}}
+                        <p>ALERT</p>
+                    {{else}}
+                        <form action="/api/products/{{this._id}}/notify/{{../user.email}}" method="POST">
+                            <button class="btn btnCompra" type="submit">Notificarme de Stock</button>
+                        </form>
+                        <form action="/api/products/{{this._id}}/favorite/{{../user.email}}" method="POST">
+                            <button class="btnFavorite" type="submit"><img src="../../img/{{#if this.favorite}}favorite.png{{else}}noFavorite.png{{/if}}" alt=""></button>
+                        </form>
+                    {{/if}}
+                {{/if}}
+            </div>
         </div>
         {{/each}}
     </div>

@@ -36,11 +36,14 @@ class ViewController {
             const sort = req.query.sort ? {price: Number(req.query.sort)} : {};
             const page = req.query.page || 1;
             const products = await productServices.getProductsPaginate(filtro, {limit: limit, page: page, sort: sort});
+            const userFav = await userServices.getUserByEmail({email: user.email});
     
             let elementos = products.docs.map(prod => {
                 const correctPrice = {
                     ...prod.toObject(),
-                    price: prod.price.toFixed(2)
+                    price: prod.price.toFixed(2),
+                    notifyUser: prod.notify.includes(user.email),
+                    favorite: userFav.favorite.includes(prod._id)
                 };
                 return correctPrice;
             });
@@ -136,6 +139,48 @@ class ViewController {
         } catch (error) {
             //console.log(error)
             res.status(500).json({error: "Error del servidor al renderizar Carrito", error});
+        }
+    }
+
+    async viewFavorite (req, res) {
+        try {
+            
+            if (!req.user) {
+                return res.redirect("/login");
+            }
+            const user = req.user;
+
+            
+
+            res.render("favorite", {
+                title: "Productos favoritos",
+                fileCss: "style.css",
+
+                user
+            });
+        } catch (error) {
+            
+        }
+    }
+
+    async viewUsers (req, res) {
+        try {
+            
+            if (!req.user) {
+                return res.redirect("/login");
+            }
+            const user = req.user;
+
+            
+
+            res.render("users", {
+                title: "Administrador de Usuarios",
+                fileCss: "style.css",
+
+                user
+            });
+        } catch (error) {
+            
         }
     }
 

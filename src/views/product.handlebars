@@ -24,7 +24,9 @@
                             <button class="btn" type="submit">Comprar</button>
                         </form>
                     {{else}}
-                        <button class="btn">Notificarme de Stock</button>
+                        <form action="/api/products/{{product._id}}/notify/{{user.email}}" method="POST">
+                            <button class="btn" type="submit">Notificarme de Stock</button>
+                        </form>
                     {{/if}}
                 </div>
             </div>

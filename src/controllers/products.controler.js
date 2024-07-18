@@ -1,4 +1,4 @@
-import { productServices } from "../services/services.js";
+import { productServices, userServices } from "../services/services.js";
 import CustomError from "../services/errors/custom-error.js";
 import { EErrors } from "../services/errors/enum.js";
 import { infoErrorCode, infoErrorItem, infoErrorProducto } from "../services/errors/info.js";
@@ -102,6 +102,82 @@ class ProductController {
             res.json ({message: "Producto eliminado"});
         } catch (error) {
             req.logger.error("(CONTROLLER) - Error al eliminar producto")
+            res.status(500).json({error: error.message});
+        }
+    }
+
+    async notifyProducto (req, res) {
+        const { pid, uid } = req.params;
+
+        try {
+
+            console.log("producto" + pid);
+            console.log("usuario" + uid)
+            const product = await productServices.getProductById(pid);
+
+            if (!product) {
+                req.logger.fatal("(CONTROLLER) - El producto no existe");
+                throw CustomError.crearError({
+                    nombre: "Producto inexistente",
+                    causa: infoErrorItem(pid),
+                    mensaje: "El prodcuto no existe",
+                    codigo: EErrors.ITEM_INVALIDO
+                });
+            }
+
+            if (product.stock !== 0) {
+                req.logger.fatal("(CONTROLLER) - El producto tiene stock");
+                res.json(product);
+            }
+
+            if (product.owner === uid) {
+                req.logger.fatal("(CONTROLLER) - No podemos notificar stock de tus productos");
+                res.json(product);
+            }
+
+            product.notify.push(uid);
+
+            console.log(product)
+
+            await productServices.updateProduct(pid, product);
+
+            req.logger.info("(CONTROLLER) - Se agrego usuario para ser notificado de stock");
+            res.redirect("/products")
+
+        } catch (error) {
+            req.logger.error("(CONTROLLER) - Error al cargar notificacion de producto")
+            res.status(500).json({error: error.message});
+        }
+    }
+
+    async favoriteProduct (req, res) {
+        const { pid, uid } = req.params;
+
+        try {
+            console.log("producto" + pid);
+            console.log("usuario" + uid)
+            const user = await userServices.getUserByEmail({email: uid});
+            if(!user) {
+                return res.status(404).send("Usuario no encontrado")
+            }
+
+            const exist = user.favorite.find(item => item === pid);
+            if (exist) {
+                user.favorite.splice(user.favorite.indexOf(exist),1);
+            } else {
+                user.favorite.push(pid);
+            }
+
+            await userServices.updateUserByEmail({email: uid}, user);
+
+            const userNvo = await userServices.getUserByEmail({email: uid});
+
+            console.log(userNvo)
+
+            req.logger.info("(CONTROLLER) - Se agrego producto a favoritos");
+            res.redirect("/products")
+        } catch (error) {
+            req.logger.error("(CONTROLLER) - Error al marcar favorito el producto")
             res.status(500).json({error: error.message});
         }
     }

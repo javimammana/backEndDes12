@@ -149,8 +149,22 @@ socket.on("listProduct", (data) => {
         }
     }
 
-    products.forEach((element) => {
-        listProducts += `<div id="item${element.code}" class="rtCard">
+    const sinStock = [];
+    const stockBajo = [];
+    const conStock = [];
+
+    for (prod of products) {
+        if (prod.stock == 0) {
+            sinStock.push(prod);
+        } else if (prod.stock > 0 && prod.stock < 10) {
+            stockBajo.push(prod);
+        } else {
+            conStock.push(prod);
+        }
+    }
+
+    sinStock.forEach((element) => {
+        listProducts += `<div id="item${element.code}" class="rtCard sinstock">
                             <div class="rtFlex">
                                 <div class="rtImgBox">
                                     <img class="rtImg" src="img/${element.img}">
@@ -195,7 +209,125 @@ socket.on("listProduct", (data) => {
                                     </div>
                                     <div class="rtCardInfo2">
                                         <p>Stock: <input class="rtFormItem" type="number" placeholder="${element.stock}" name="stockUpdate${element.code}" id="stockUpdate${element.code}"></p>
-                                        <h5>Precio $ <input class="rtFormItem" type="number" placeholder="${element.price.toFixed(2)}" name="priceUpdate${element.code}" id="priceUpdate${element.code}">.-</h5>
+                                        <h5>Precio $ <input class="rtFormItem" type="number" placeholder="${element.price.toFixed(2)}" name="priceUpdate${element.code}" id="priceUpdate${element.code}"></h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rtButtons">
+                                <button class="rtBtn rtBtnCancel" onClick="noUpdate('${element.code}')">Cancelar</button>
+                                <button class="rtBtn rtBtnUpdate" onClick="updateButton('${element.code}', '${element._id}', '${element.owner}')">Actualizar</button>
+                            </div>
+                        </div>
+                        
+                        `;
+    });
+
+    stockBajo.forEach((element) => {
+        listProducts += `<div id="item${element.code}" class="rtCard stockbajo">
+                            <div class="rtFlex">
+                                <div class="rtImgBox">
+                                    <img class="rtImg" src="img/${element.img}">
+                                </div>
+                                <div class="rtInfo">
+                                    <div class="rtCardInfo1">
+                                        <h3>${element.title}</h3>
+                                        <div>
+                                            <h5>Categoria: ${element.category}</h5>
+                                            <p>${element.description}</p>
+                                        </div>
+                                    </div>
+                                    <div class="rtCardInfo2">
+                                        <p>Codigo: ${element.code}  -  Stock: ${element.stock}</p>
+                                        <h5>$ ${element.price.toFixed(2)}.-</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rtButtons">
+                                <button class="rtBtn rtBtnUpdate" onClick="update('${element.code}')">Modificar</button>
+                                <button class="rtBtn rtBtnDelete" onClick="deleteItem('${element._id}', '${element.owner}')">Borrar</button>
+                            </div>
+                        </div>
+
+
+                        <div id="update${element.code}" class="noVisible">
+
+                            <div class="rtFlex">
+                                <div class="rtImgBox">
+                                    <img class="rtImg" src="img/${element.img}">
+                                </div>
+                                <div class="rtInfo">
+                                    <div class="rtCardInfo1">
+                                        <div>
+                                            <h3>${element.title}</h3>
+                                            <p>Codigo: ${element.code}</p>
+                                        </div>
+                                        <div>
+                                            <h5>Categoria: ${element.category}</h5>
+                                            <p>${element.description}</p>
+                                        </div>
+                                    </div>
+                                    <div class="rtCardInfo2">
+                                        <p>Stock: <input class="rtFormItem" type="number" placeholder="${element.stock}" name="stockUpdate${element.code}" id="stockUpdate${element.code}"></p>
+                                        <h5>Precio $ <input class="rtFormItem" type="number" placeholder="${element.price.toFixed(2)}" name="priceUpdate${element.code}" id="priceUpdate${element.code}"></h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rtButtons">
+                                <button class="rtBtn rtBtnCancel" onClick="noUpdate('${element.code}')">Cancelar</button>
+                                <button class="rtBtn rtBtnUpdate" onClick="updateButton('${element.code}', '${element._id}', '${element.owner}')">Actualizar</button>
+                            </div>
+                        </div>
+                        
+                        `;
+    });
+
+    conStock.forEach((element) => {
+        listProducts += `<div id="item${element.code}" class="rtCard constock">
+                            <div class="rtFlex">
+                                <div class="rtImgBox">
+                                    <img class="rtImg" src="img/${element.img}">
+                                </div>
+                                <div class="rtInfo">
+                                    <div class="rtCardInfo1">
+                                        <h3>${element.title}</h3>
+                                        <div>
+                                            <h5>Categoria: ${element.category}</h5>
+                                            <p>${element.description}</p>
+                                        </div>
+                                    </div>
+                                    <div class="rtCardInfo2">
+                                        <p>Codigo: ${element.code}  -  Stock: ${element.stock}</p>
+                                        <h5>$ ${element.price.toFixed(2)}.-</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rtButtons">
+                                <button class="rtBtn rtBtnUpdate" onClick="update('${element.code}')">Modificar</button>
+                                <button class="rtBtn rtBtnDelete" onClick="deleteItem('${element._id}', '${element.owner}')">Borrar</button>
+                            </div>
+                        </div>
+
+
+                        <div id="update${element.code}" class="noVisible">
+
+                            <div class="rtFlex">
+                                <div class="rtImgBox">
+                                    <img class="rtImg" src="img/${element.img}">
+                                </div>
+                                <div class="rtInfo">
+                                    <div class="rtCardInfo1">
+                                        <div>
+                                            <h3>${element.title}</h3>
+                                            <p>Codigo: ${element.code}</p>
+                                        </div>
+                                        <div>
+                                            <h5>Categoria: ${element.category}</h5>
+                                            <p>${element.description}</p>
+                                        </div>
+                                    </div>
+                                    <div class="rtCardInfo2">
+                                        <p>Stock: <input class="rtFormItem" type="number" placeholder="${element.stock}" name="stockUpdate${element.code}" id="stockUpdate${element.code}"></p>
+                                        <h5>Precio $ <input class="rtFormItem" type="number" placeholder="${element.price.toFixed(2)}" name="priceUpdate${element.code}" id="priceUpdate${element.code}"></h5>
                                     </div>
                                 </div>
                             </div>

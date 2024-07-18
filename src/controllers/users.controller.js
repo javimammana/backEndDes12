@@ -23,6 +23,7 @@ class UserController {
             age: user.age,
             email: user.email,
             role: user.role,
+            premium: user.role === "PREMIUM" ? true : false,
             cart: user.cart,
             favorite: user.favorite,
             chatid: user.chatid
@@ -68,6 +69,7 @@ class UserController {
                 age: user.age,
                 email: user.email,
                 role: user.role,
+                premium: user.role === "PREMIUM" ? true : false,
                 cart: user.cart,
                 favorite: user.favorite,
                 chatid: user.chatid
@@ -108,6 +110,7 @@ class UserController {
                 age: user.age,
                 email: user.email,
                 role: user.role,
+                premium: user.role === "PREMIUM" ? true : false,
                 cart: user.cart,
                 favorite: user.favorite,
                 chatid: user.chatid
