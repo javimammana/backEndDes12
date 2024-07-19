@@ -128,10 +128,17 @@ function updateButton (code, id, owner) {
     const priceUp = document.getElementById("priceUpdate"+code).value;
     const data = {
         id: id,
-        stock: !stockUp ? "" : Number(stockUp),
+        stock: !stockUp ? "" : stockUp,
         price: !priceUp ? "" : Number(priceUp)
     }
+
     socket.emit("updateProduct", data);
+
+    document.getElementById("buttons"+code).classList.remove("rtButtons");
+    document.getElementById("buttons"+code).classList.add("noVisible");
+    document.getElementById("loading"+code).classList.remove("noVisible");
+    document.getElementById("loading"+code).classList.add("load");
+
 }
 
 socket.on("listProduct", (data) => {
@@ -213,9 +220,14 @@ socket.on("listProduct", (data) => {
                                     </div>
                                 </div>
                             </div>
-                            <div class="rtButtons">
+                            <div class="rtButtons" id="buttons${element.code}">
                                 <button class="rtBtn rtBtnCancel" onClick="noUpdate('${element.code}')">Cancelar</button>
                                 <button class="rtBtn rtBtnUpdate" onClick="updateButton('${element.code}', '${element._id}', '${element.owner}')">Actualizar</button>
+                            </div>
+                            <div class="noVisible" id="loading${element.code}">
+                                <p>ACTUALIZANDO...</p>
+                                <p>Enviando Notificaciones</p>
+                                <P>Por favor, espere</p>
                             </div>
                         </div>
                         

@@ -2,6 +2,9 @@ import { productServices, userServices } from "../services/services.js";
 import CustomError from "../services/errors/custom-error.js";
 import { EErrors } from "../services/errors/enum.js";
 import { infoErrorCode, infoErrorItem, infoErrorProducto } from "../services/errors/info.js";
+import { EmailManager } from "../services/email.js";
+
+const emailManager = new EmailManager();
 
 
 
@@ -110,9 +113,6 @@ class ProductController {
         const { pid, uid } = req.params;
 
         try {
-
-            console.log("producto" + pid);
-            console.log("usuario" + uid)
             const product = await productServices.getProductById(pid);
 
             if (!product) {
@@ -135,11 +135,11 @@ class ProductController {
                 res.json(product);
             }
 
-            product.notify.push(uid);
 
-            console.log(product)
-
-            await productServices.updateProduct(pid, product);
+            if (!product.notify.includes(uid)) {
+                product.notify.push(uid);
+                await productServices.updateProduct(pid, product);
+            }
 
             req.logger.info("(CONTROLLER) - Se agrego usuario para ser notificado de stock");
             res.redirect("/products")
@@ -273,6 +273,14 @@ class ProductController {
                 ...product._doc,
                 stock: stock,
                 price: price
+            }
+
+            if (product.stock === 0 && nvoProd.stock > 0) {
+                for (let mail of product.notify) {
+                    let usuario = await userServices.getUserByEmail({email: mail});
+                    await emailManager.sendMailStock(mail, usuario.first_name, nvoProd);
+                }
+                nvoProd.notify = [];
             }
 
             await productServices.updateProduct(id, nvoProd);

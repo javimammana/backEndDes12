@@ -31,6 +31,29 @@ class EmailManager {
         }
     }
 
+    async sendMailStock (email, first_name, product) {
+        try {
+            
+            const mailOptions = {
+                    from:"Javi M <javiermammana.deb@gmail.com>",
+                    to: email,
+                    subject: `${product.title} de nuevo en Stock!!!`,
+                    html: ` <h1>Hola ${first_name}</h1>
+                            <p>El producto ${product.title} se encuentra nuevamente en stock!!!</p>
+                            <p>Solo contamos con ${product.stock} de unidades, no lo dejes pasar!!</p>
+                            <p>Compralo desde haciendo <a href="http://localhost:8080/product/${product._id}">click aqui!!</a></p>
+                            <p>Que tengas un excelente dia!</p>
+                            <p>Te saluda el quipo de TIENDA VIRTUAL</p>
+                            `
+
+            }
+            await this.transport.sendMail(mailOptions);
+
+        } catch (error) {
+            console.log("Error al enviar e-Mail de compra");
+        }
+    }
+
     async sendMailReset(email, first_name, token) {
         try {
             const mailOptions = {

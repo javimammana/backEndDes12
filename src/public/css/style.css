@@ -412,6 +412,20 @@
     display: none;
 }
 
+.load {
+    width: 100px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 0px;
+}
+
+.load p {
+    text-align: center;
+    font-size: 14px;
+}
+
 .realTime {
     display: flex;
     flex-direction: column;
